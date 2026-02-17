@@ -7,8 +7,10 @@ describe ('Login test',()=>{
 
     it('login success',()=>{
         loginPage.visit();
-        loginPage.enterEmail("standard_user");
-        loginPage.enterPassword("secret_sauce");
+        cy.fixture('example').then((user) => {
+            loginPage.enterEmail(user.email);
+            loginPage.enterPassword(user.password);
+        })
         loginPage.clickLogin();
     })
 
