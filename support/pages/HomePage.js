@@ -14,7 +14,10 @@ import {faker} from '@faker-js/faker';
     }
 
     addToCart() {
-        cy.xpath("//button[@id='add-to-cart-sauce-labs-backpack']").click();
+      this.ensureInventoryLoaded();
+      cy.xpath("//button[@id='add-to-cart-sauce-labs-backpack']", { timeout: 10000 })
+        .should('be.visible')
+        .click();
     }
 
     openCart() {
@@ -28,12 +31,36 @@ import {faker} from '@faker-js/faker';
           
     }
 
-    firstName(firstname){
-        cy.xpath("//input[@id='first-name']").type(firstname)
+    firstName(){
+        cy.xpath("//input[@id='first-name']").type(faker.person.firstName())
     }
 
-    lastName(lastname){
-        cy.xpath("//input[@id='last-name']").type(lastname )
+    lastName(){
+        cy.xpath("//input[@id='last-name']").type(faker.person.lastName())
+    }
+
+    postalCode(){
+        cy.xpath("//input[@id='postal-code']").type(faker.location.zipCode())
+    }
+
+    continueToCheckOut(){
+        cy.xpath("//input[@id='continue']").click();
+        cy.xpath("//button[@id='finish']").click();
+
+    }
+    backToAllProducts(){
+        cy.xpath("//button[@id='back-to-products']").click();
+    }
+
+    addAllProductsToCart() {
+      this.ensureInventoryLoaded();
+      cy.get("button[id*='add-to-cart']").each(($el) => {
+        cy.wrap($el).should('be.visible').click();
+      });
+    }
+
+    ensureInventoryLoaded() {
+      cy.get('.inventory_list', { timeout: 10000 }).should('be.visible');
     }
 
 }
