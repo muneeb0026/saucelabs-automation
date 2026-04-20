@@ -30,7 +30,7 @@ describe("Home page test", () => {
     homePage.lastName();
     homePage.postalCode();
     homePage.continueToCheckOut();
-
+    
 
   });
 
